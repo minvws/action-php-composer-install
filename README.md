@@ -1,6 +1,6 @@
 # PHP - Composer install
 
-- This pipeline is designed to install the dependencies of a PHP project that uses Composer. 
+- This pipeline is designed to install the dependencies of a PHP project that uses Composer.
 It will install the dependencies and cache them for future runs.
 - The pipeline is designed to be as generic as possible, so they can be easily reused in any project.
 - This repository is a part of the generic GitHub Actions pipeline collection that can be used in any project.
