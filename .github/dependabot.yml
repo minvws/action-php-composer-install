@@ -1,0 +1,16 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  # Workaround for dependabot issue - https://github.com/dependabot/dependabot-core/issues/6345
+  - package-ecosystem: github-actions
+    directory: /.github/actions/composer-install
+    schedule:
+      interval: 'weekly'
+    groups:
+      actions:
+        patterns:
+        - "actions/*"
