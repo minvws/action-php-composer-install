@@ -39,7 +39,7 @@ In this basic example, the workflow is executed automatically on push to the `ma
 The action has the following inputs:
 
 - `php_version` (**required**): which PHP version to use. For example `"8.4"`, `"8.x"` or `latest`.
-- `COMPOSER_AUTH_TOKEN` (**required**): the GitHub authentication token. Supports both Classic and Fine-grained tokens.
+- `COMPOSER_AUTH_TOKEN` (optional): a GitHub authentication token. Supports both Classic and Fine-grained tokens.
 
 ## Contributing
 

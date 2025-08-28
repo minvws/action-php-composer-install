@@ -6,7 +6,6 @@ inputs:
     required: true
   COMPOSER_AUTH_TOKEN:
     description: "Composer authentication token"
-    required: true
 
 runs:
   using: "composite"
