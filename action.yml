@@ -4,7 +4,6 @@ inputs:
   php_version:
     description: "PHP version"
     required: true
-    default: "8.3"
   COMPOSER_AUTH_TOKEN:
     description: "Composer authentication token"
     required: true
