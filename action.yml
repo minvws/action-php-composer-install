@@ -1,22 +1,66 @@
 name: "Composer install"
 description: "Installs the Composer dependencies for a PHP application"
 inputs:
-  php_version:
-    description: "PHP version"
+  php-version:
+    description: "What version of PHP to use (like '8.2','8.3','8.4')"
     required: true
-  COMPOSER_AUTH_TOKEN:
+    default: '8.3'
+  extensions:
+    description: "Setup PHP extensions (like zip, pcov, xdebug, pgsql)."
+    required: false
+  coverage:
+    description: "Setup code coverage driver."
+    required: false
+    default: 'none'
+  composer-auth-token:
     description: "Composer authentication token"
+  composer-install:
+    description: "Whether to run Composer install. Values: 'yes' or 'no'"
+    required: true
+    default: 'yes'
+  composer-with-dev-packages:
+    description: "Whether to install dev packages. Values: 'yes' or 'no'"
+    required: false
+    default: 'yes'
+  composer-args:
+    description: "Optional arguments to pass (like '--optimize-autoloader --ignore-platform-reqs- -no-cache --quiet')"
+    required: false
+
+outputs:
+  php_version:
+    description: "The PHP version installed"
+    value: ${{ steps.php_install.outputs.php-version }}
 
 runs:
   using: "composite"
   steps:
     - name: Install PHP
+      id: php_install
       uses: shivammathur/setup-php@v2
       with:
-        php-version: "${{ inputs.php_version }}"
+        php-version: "${{ inputs.php-version }}"
+        extensions: "${{ inputs.extensions }}"
+        coverage: "${{ inputs.coverage }}"
         tools: composer
 
-    - name: Composer install
+    - name: Run Composer install
+      id: composer_install
+      if: inputs.composer-install == 'yes'
+      shell: bash
       env:
-        COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ inputs.COMPOSER_AUTH_TOKEN }}"}}'
-      run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+        COMPOSER_AUTH: '{"github-oauth": {"github.com": "${{ inputs.composer-auth-token }}"}}'
+        COMPOSER_EXTRA_ARGS: "${{ inputs.composer-args }}"
+      run: |
+        COMPOSER_CMD=(composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist)
+
+        if [ "${{ inputs.composer-with-dev-packages }}" = "no" ]; then
+          COMPOSER_CMD+=(--no-dev)
+        fi
+
+        if [ -n "$COMPOSER_EXTRA_ARGS" ]; then
+          read -ra EXTRA_ARGS <<< "$COMPOSER_EXTRA_ARGS"
+          COMPOSER_CMD+=("${EXTRA_ARGS[@]}")
+        fi
+
+        echo "Running: ${COMPOSER_CMD[*]}"
+        "${COMPOSER_CMD[@]}"
