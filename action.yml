@@ -27,7 +27,7 @@ inputs:
     required: false
 
 outputs:
-  php_version:
+  php-version:
     description: "The PHP version installed"
     value: ${{ steps.php_install.outputs.php-version }}
 

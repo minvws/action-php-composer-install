@@ -50,7 +50,7 @@ The action has the following inputs:
 
 The action provides the following outputs:
 
-- `php_version`: The PHP version that was installed.
+- `php-version`: The PHP version that was installed.
 
 ## Contributing
 
