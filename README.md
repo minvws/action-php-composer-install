@@ -26,11 +26,11 @@ jobs:
       - name: Install dependencies
         uses: minvws/action-php-composer-install@v1
         with:
-          COMPOSER_AUTH_TOKEN: ${{ secrets.REPO_READ_ONLY_TOKEN }}
-          php_version: <php_version>
+          php-version: <php_version>
+          composer-auth-token: ${{ secrets.REPO_READ_ONLY_TOKEN }}
 ```
 
-Replace `<php_version>` with the PHP version you want to use. For example `"8.3"`.
+Replace `<php_version>` with the PHP version you want to use. For example `'8.3'`.
 
 In this basic example, the workflow is executed automatically on push to the `main` branch and on any pull request. And thanks to the `workflow_dispatch` trigger it can also be executed manually from the repository's Actions tab.
 
@@ -38,8 +38,19 @@ In this basic example, the workflow is executed automatically on push to the `ma
 
 The action has the following inputs:
 
-- `php_version` (**required**): which PHP version to use. For example `"8.4"`, `"8.x"` or `latest`.
-- `COMPOSER_AUTH_TOKEN` (optional): a GitHub authentication token. Supports both Classic and Fine-grained tokens.
+- `php-version` (**required**): which PHP version to use. For example `'8.4'`, `'8.3'` or `'8.2'`. Default: `'8.3'`.
+- `extensions` (optional): PHP extensions to install (like `zip, pcov, xdebug, pgsql`).
+- `coverage` (optional): setup code coverage driver. Default: `'none'`.
+- `composer-auth-token` (optional): a GitHub authentication token. Supports both Classic and Fine-grained tokens.
+- `composer-install` (optional): whether to run Composer install. Values: `'yes'` or `'no'`. Default: `'yes'`.
+- `composer-with-dev-packages` (optional): whether to install dev packages. Values: `'yes'` or `'no'`. Default: `'yes'`.
+- `composer-args` (optional): additional arguments to pass to Composer (like `'--optimize-autoloader --ignore-platform-reqs'`).
+
+### Outputs
+
+The action provides the following outputs:
+
+- `php-version`: The PHP version that was installed.
 
 ## Contributing
 
